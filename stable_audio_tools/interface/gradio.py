@@ -64,9 +64,7 @@ def load_model(model_name, model_config=None, model_ckpt_path=None, pretrained_n
 
 def load_and_process_audio(audio_path, sample_rate, seconds_start, seconds_total):
     if audio_path is None:
-        # return torch.zeros((2, int(sample_rate * seconds_total)))
         return torch.zeros((2, int(sample_rate * 10)))
-        # return torch.zeros((2, 215))
     audio_tensor, sr = torchaudio.load(audio_path)
     start_index = int(sample_rate * seconds_start)
     target_length = int(sample_rate * seconds_total)
