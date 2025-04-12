@@ -59,6 +59,7 @@ def load_model(model_name, model_config=None, model_ckpt_path=None, pretrained_n
     if model_half:
         model.to(torch.float16)
     print(f"Done loading model")
+    print(f"test: {sample_size} {sample_rate}")
     return model, model_config, sample_rate, sample_size
 
 def load_and_process_audio(audio_path, sample_rate, seconds_start, seconds_total):
@@ -152,6 +153,7 @@ def generate_cond(
         model = current_model
     else:
         model = current_model
+    print(f"test: {sample_size} {sample_rate}")
     if video_file is not None:
         video_path = video_file.name
     elif video_path:
