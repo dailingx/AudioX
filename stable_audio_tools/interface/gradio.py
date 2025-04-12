@@ -35,8 +35,6 @@ os.environ['TMPDIR'] = './tmp'
 
 current_model_name = None
 current_model = None
-current_sample_rate = None
-current_sample_size = None
 
 
 
@@ -88,8 +86,8 @@ def generate_cond(
         cfg_scale=6.0,
         steps=250,
         preview_every=None,
-        gradio_sample_size=485100,
-        gradio_sample_rate=44100,
+        sample_size=485100,
+        sample_rate=44100,
         seed=-1,
         sampler_type="dpmpp-3m-sde",
         sigma_min=0.03,
@@ -139,9 +137,7 @@ def generate_cond(
     else:
         model_config = None
     target_fps = model_config.get("video_fps", 5)
-    global current_model_name, current_model, current_sample_rate, current_sample_size
-    current_sample_rate = gradio_sample_rate
-    current_sample_size = gradio_sample_size
+    global current_model_name, current_model
     if current_model is None or model_name != current_model_name:
         current_model, model_config, _, _ = load_model(
             model_name=model_name,
@@ -156,8 +152,6 @@ def generate_cond(
         model = current_model
     else:
         model = current_model
-        sample_rate = current_sample_rate
-        sample_size = current_sample_size
     if video_file is not None:
         video_path = video_file.name
     elif video_path:
