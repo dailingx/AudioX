@@ -172,6 +172,7 @@ def generate_cond(
         audio_path = None
     
     Video_tensors = read_video(video_path, seek_time=seconds_start, duration=seconds_total, target_fps=target_fps)
+    print("张量 Video_tensors 的形状:", Video_tensors.size())
     print(f"test: {sample_size} {sample_rate} {seconds_total}")
     audio_tensor = load_and_process_audio(audio_path, sample_rate, seconds_start, seconds_total)
     

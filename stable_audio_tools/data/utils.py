@@ -148,6 +148,7 @@ def read_video(filepath, seek_time=0., duration=-1, target_fps=2):
     seek_frame = int(seek_time * fps)
     end_frame = total_frames - 1
     frame_ids = np.linspace(seek_frame, end_frame, num=video_sample_frames, dtype=int).tolist()
+    print(f"frame_ids: {frame_ids}")
 
     frames = vr.get_batch(frame_ids).asnumpy()
     frames = torch.from_numpy(frames).permute(0, 3, 1, 2)
@@ -156,8 +157,9 @@ def read_video(filepath, seek_time=0., duration=-1, target_fps=2):
         resize_transform = transforms.Resize((224, 224))
         frames = resize_transform(frames)
 
-    video_tensor = adjust_video_duration(frames, duration, target_fps)
-    assert video_tensor.shape[0] == duration * target_fps, f"The shape of video_tensor is {video_tensor.shape}"
+    # video_tensor = adjust_video_duration(frames, duration, target_fps)
+    video_tensor = frames
+    assert video_tensor.shape[0] == video_sample_frames, f"The shape of video_tensor is {video_tensor.shape}"
     return video_tensor
 
 def merge_video_audio(video_path, audio_path, output_path, start_time, duration):
