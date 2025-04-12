@@ -128,7 +128,7 @@ def adjust_video_duration(video_tensor, duration, target_fps):
 
 def read_video(filepath, seek_time=0., duration=-1, target_fps=2):
     if filepath is None:
-        return torch.zeros((215, 3, 224, 224))
+        return torch.zeros((50, 3, 224, 224))
     
     ext = os.path.splitext(filepath)[1].lower()
     if ext in ['.jpg', '.jpeg', '.png']:
