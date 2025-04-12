@@ -138,9 +138,9 @@ def generate_cond(
     else:
         model_config = None
     target_fps = model_config.get("video_fps", 5)
-    global current_model_name, current_model, current_sample_rate, current_sample_size
+    global current_model_name, current_model
     if current_model is None or model_name != current_model_name:
-        current_model, model_config, sample_rate, sample_size = load_model(
+        current_model, model_config, _, _ = load_model(
             model_name=model_name,
             model_config=model_config,
             model_ckpt_path=ckpt_path,
@@ -151,12 +151,10 @@ def generate_cond(
         )
         current_model_name = model_name
         model = current_model
-        current_sample_rate = sample_rate
-        current_sample_size = sample_size
     else:
         model = current_model
-        sample_rate = current_sample_rate
-        sample_size = current_sample_size
+    sample_rate = int(sample_rate)
+    sample_size = int(sample_size)
     print(f"test: {sample_size} {sample_rate}")
     if video_file is not None:
         video_path = video_file.name
