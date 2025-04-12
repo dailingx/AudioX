@@ -88,6 +88,8 @@ def generate_cond(
         cfg_scale=6.0,
         steps=250,
         preview_every=None,
+        gradio_sample_size=485100,
+        gradio_sample_rate=44100,
         seed=-1,
         sampler_type="dpmpp-3m-sde",
         sigma_min=0.03,
@@ -138,8 +140,10 @@ def generate_cond(
         model_config = None
     target_fps = model_config.get("video_fps", 5)
     global current_model_name, current_model, current_sample_rate, current_sample_size
+    current_sample_rate = gradio_sample_rate
+    current_sample_size = gradio_sample_size
     if current_model is None or model_name != current_model_name:
-        current_model, model_config, sample_rate, sample_size = load_model(
+        current_model, model_config, _, _ = load_model(
             model_name=model_name,
             model_config=model_config,
             model_ckpt_path=ckpt_path,
@@ -150,8 +154,6 @@ def generate_cond(
         )
         current_model_name = model_name
         model = current_model
-        current_sample_rate = sample_rate
-        current_sample_size = sample_size
     else:
         model = current_model
         sample_rate = current_sample_rate
@@ -334,6 +336,8 @@ def create_sampling_ui(model_config_map, inpainting=False):
                         steps_slider = gr.Slider(minimum=1, maximum=500, step=1, value=100, label="Steps")
                         preview_every_slider = gr.Slider(minimum=0, maximum=100, step=1, value=0, label="Preview Every")
                         cfg_scale_slider = gr.Slider(minimum=0.0, maximum=25.0, step=0.1, value=7.0, label="CFG Scale")
+                        sample_size_textbox = gr.Textbox(label="Sample Size (Sample Size / Sample Rate = Audio Duration)", value="485100")
+                        sample_rate_textbox = gr.Textbox(label="Sample Rate (Sample Size / Sample Rate = Audio Duration)", value="44100")
                         seed_textbox = gr.Textbox(label="Seed (set to -1 for random seed)", value="-1")
                         sampler_type_dropdown = gr.Dropdown(
                             ["dpmpp-2m-sde", "dpmpp-3m-sde", "k-heun", "k-lms", "k-dpmpp-2s-ancestral", "k-dpm-2", "k-dpm-fast"],
@@ -418,7 +422,9 @@ def create_sampling_ui(model_config_map, inpainting=False):
                 seconds_total_slider, 
                 cfg_scale_slider, 
                 steps_slider, 
-                preview_every_slider, 
+                preview_every_slider,
+                sample_size_textbox,
+                sample_rate_textbox,
                 seed_textbox, 
                 sampler_type_dropdown, 
                 sigma_min_slider, 
