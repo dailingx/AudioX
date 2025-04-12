@@ -146,8 +146,17 @@ def read_video(filepath, seek_time=0., duration=-1, target_fps=2):
     total_frames = len(vr)
 
     seek_frame = int(seek_time * fps)
-    end_frame = total_frames - 1
-    frame_ids = np.linspace(seek_frame, end_frame, num=video_sample_frames, dtype=int).tolist()
+    if duration > 0:
+        total_frames_to_read = int(target_fps * duration)
+        frame_interval = int(math.ceil(fps / target_fps))
+        end_frame = min(seek_frame + total_frames_to_read * frame_interval, total_frames)
+        frame_ids = list(range(seek_frame, end_frame, frame_interval))
+    else:
+        frame_interval = int(math.ceil(fps / target_fps))
+        frame_ids = list(range(0, total_frames, frame_interval))
+
+    # end_frame = total_frames - 1
+    # frame_ids = np.linspace(seek_frame, end_frame, num=video_sample_frames, dtype=int).tolist()
     print(f"frame_ids: {frame_ids}")
 
     frames = vr.get_batch(frame_ids).asnumpy()
