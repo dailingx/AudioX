@@ -146,17 +146,17 @@ def read_video(filepath, seek_time=0., duration=-1, target_fps=2):
     total_frames = len(vr)
 
     seek_frame = int(seek_time * fps)
-    if duration > 0:
-        total_frames_to_read = int(target_fps * duration)
-        frame_interval = int(math.ceil(fps / target_fps))
-        end_frame = min(seek_frame + total_frames_to_read * frame_interval, total_frames)
-        frame_ids = list(range(seek_frame, end_frame, frame_interval))
-    else:
-        frame_interval = int(math.ceil(fps / target_fps))
-        frame_ids = list(range(0, total_frames, frame_interval))
+    # if duration > 0:
+    #     total_frames_to_read = int(target_fps * duration)
+    #     frame_interval = int(math.ceil(fps / target_fps))
+    #     end_frame = min(seek_frame + total_frames_to_read * frame_interval, total_frames)
+    #     frame_ids = list(range(seek_frame, end_frame, frame_interval))
+    # else:
+    #     frame_interval = int(math.ceil(fps / target_fps))
+    #     frame_ids = list(range(0, total_frames, frame_interval))
 
-    # end_frame = total_frames - 1
-    # frame_ids = np.linspace(seek_frame, end_frame, num=video_sample_frames, dtype=int).tolist()
+    end_frame = total_frames - 1
+    frame_ids = np.linspace(seek_frame, end_frame, num=video_sample_frames, dtype=int).tolist()
     print(f"frame_ids: {frame_ids}")
 
     frames = vr.get_batch(frame_ids).asnumpy()
@@ -166,10 +166,10 @@ def read_video(filepath, seek_time=0., duration=-1, target_fps=2):
         resize_transform = transforms.Resize((224, 224))
         frames = resize_transform(frames)
 
-    video_tensor = adjust_video_duration(frames, duration, target_fps)
-    # video_tensor = frames
-    # assert video_tensor.shape[0] == video_sample_frames, f"The shape of video_tensor is {video_tensor.shape}"
-    assert video_tensor.shape[0] == duration * target_fps, f"The shape of video_tensor is {video_tensor.shape}"
+    # video_tensor = adjust_video_duration(frames, duration, target_fps)
+    video_tensor = frames
+    assert video_tensor.shape[0] == video_sample_frames, f"The shape of video_tensor is {video_tensor.shape}"
+    # assert video_tensor.shape[0] == duration * target_fps, f"The shape of video_tensor is {video_tensor.shape}"
     return video_tensor
 
 def merge_video_audio(video_path, audio_path, output_path, start_time, duration):
