@@ -3,7 +3,7 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2503.10522-brightgreen.svg?style=flat-square)](https://arxiv.org/abs/2503.10522)
 [![Project Page](https://img.shields.io/badge/GitHub.io-Project-blue?logo=Github&style=flat-square)](https://zeyuet.github.io/AudioX/)
 [![🤗 Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue)](https://huggingface.co/HKUSTAudio/AudioX)
-
+[![🤗 Demo](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-blue)](https://huggingface.co/spaces/Zeyue7/AudioX)
 
 ---
 
@@ -171,4 +171,4 @@ If you have any comments or questions, feel free to contact Zeyue Tian(ztianad@c
 
 ## License
 
-Please follow [MIT License](./LICENSE).
+Please follow [CC-BY-NC](./LICENSE).
